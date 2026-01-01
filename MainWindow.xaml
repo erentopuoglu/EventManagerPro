@@ -1,0 +1,161 @@
+﻿<Window x:Class="EventManagerPro.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Event Manager" Height="600" Width="900">
+
+	<Grid Margin="10">
+		<TabControl>
+
+			
+			<TabItem Header="Events">
+				<Grid Margin="8">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="2*" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+
+					<DataGrid Grid.Column="0"
+                              ItemsSource="{Binding EventsVM.Events}"
+                              SelectedItem="{Binding EventsVM.SelectedEvent}"
+                              AutoGenerateColumns="False"
+                              Margin="0,0,10,0">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*" />
+							<DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*" />
+							<DataGridTextColumn Header="Location" Binding="{Binding Location}" Width="*" />
+						</DataGrid.Columns>
+					</DataGrid>
+
+					<StackPanel Grid.Column="1">
+
+						<TextBlock Text="Title:" />
+						<TextBox Text="{Binding EventsVM.NewTitle, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,8"/>
+
+						<TextBlock Text="Date:" />
+						<DatePicker SelectedDate="{Binding EventsVM.NewDate}"
+                                    Margin="0,0,0,8"/>
+
+						<TextBlock Text="Location:" />
+						<TextBox Text="{Binding EventsVM.NewLocation, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,12"/>
+
+						<StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+							<Button Content="Add" Width="70" Margin="0,0,6,0"
+                                    Command="{Binding EventsVM.AddCommand}"/>
+							<Button Content="Update" Width="70" Margin="0,0,6,0"
+                                    Command="{Binding EventsVM.UpdateCommand}"/>
+							<Button Content="Delete" Width="70"
+                                    Command="{Binding EventsVM.DeleteCommand}"/>
+						</StackPanel>
+
+						<Button Content="Clear"
+                                Command="{Binding EventsVM.ClearCommand}" />
+					</StackPanel>
+				</Grid>
+			</TabItem>
+
+			
+			<TabItem Header="Participants">
+				<Grid Margin="8">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="2*" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+
+					<DataGrid Grid.Column="0"
+                              ItemsSource="{Binding ParticipantsVM.Participants}"
+                              SelectedItem="{Binding ParticipantsVM.SelectedParticipant}"
+                              AutoGenerateColumns="False"
+                              Margin="0,0,10,0">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Name" Binding="{Binding FullName}" Width="*" />
+							<DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*" />
+						</DataGrid.Columns>
+					</DataGrid>
+
+					<StackPanel Grid.Column="1">
+
+						<TextBlock Text="Name:" />
+						<TextBox Text="{Binding ParticipantsVM.NewFullName, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,8"/>
+
+						<TextBlock Text="Email:" />
+						<TextBox Text="{Binding ParticipantsVM.NewEmail, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,12"/>
+
+						<StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+							<Button Content="Add" Width="70" Margin="0,0,6,0"
+                                    Command="{Binding ParticipantsVM.AddCommand}"/>
+							<Button Content="Update" Width="70" Margin="0,0,6,0"
+                                    Command="{Binding ParticipantsVM.UpdateCommand}"/>
+							<Button Content="Delete" Width="70"
+                                    Command="{Binding ParticipantsVM.DeleteCommand}"/>
+						</StackPanel>
+
+						<Button Content="Clear"
+                                Command="{Binding ParticipantsVM.ClearCommand}" />
+					</StackPanel>
+				</Grid>
+			</TabItem>
+
+
+			<TabItem Header="Attendance">
+				<Grid Margin="8">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+
+					</Grid.RowDefinitions>
+
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+						<TextBlock Text="Event:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+						<ComboBox Width="350"
+                                  ItemsSource="{Binding AttendanceVM.Events}"
+                                  SelectedItem="{Binding AttendanceVM.SelectedEvent}"
+                                  DisplayMemberPath="Title"/>
+					</StackPanel>
+
+					<DataGrid Grid.Row="1"
+                              ItemsSource="{Binding AttendanceVM.AttendanceItems}"
+                              AutoGenerateColumns="False">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="Participant"
+                                                Binding="{Binding FullName}" Width="*" />
+							<DataGridCheckBoxColumn Header="Present"
+                                                    Binding="{Binding IsPresent, Mode=TwoWay}"
+                                                    Width="120"/>
+						</DataGrid.Columns>
+					</DataGrid>
+					
+					<Grid Grid.Row="2" Margin="0,8,0,0">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="*" />
+						</Grid.ColumnDefinitions>
+
+						<StackPanel Grid.Column="0" Margin="0,0,8,0">
+							<TextBlock Text="Will Attend:" FontWeight="Bold" Margin="0,0,0,6"/>
+							<ListBox ItemsSource="{Binding AttendanceVM.PresentNames}" Height="120"/>
+						</StackPanel>
+
+						<StackPanel Grid.Column="1">
+							<TextBlock Text="Will Not Attend:" FontWeight="Bold" Margin="0,0,0,6"/>
+							<ListBox ItemsSource="{Binding AttendanceVM.AbsentNames}" Height="120"/>
+						</StackPanel>
+					</Grid>
+
+
+					<Button Grid.Row="3"
+                            Content="Save Attendance"
+                            Height="34"
+                            Margin="0,8,0,0"
+                            Command="{Binding AttendanceVM.SaveCommand}"/>
+				</Grid>
+			</TabItem>
+
+		</TabControl>
+	</Grid>
+</Window>
